@@ -1,7 +1,7 @@
 '''
 Name:       Fritzle-IP-Scanner.py
 Ersteller:  Flo und Copilot
-Version:    1.0 (06/2025)
+Version:    1.1 (06/2025)
 Lizenz:     Keine (gerne diesen Kopf erhalten und erweitern)
 Info:       Exportiert eine Geräteliste einer FritzBox 
 Spende:     Ich trinke keinen Kaffee - Spende gerne an https://offroadkids.de/
@@ -9,6 +9,7 @@ Spende:     Ich trinke keinen Kaffee - Spende gerne an https://offroadkids.de/
 '''
 import subprocess
 import sys
+import importlib.util
 import pandas as pd
 import os
 import socket
@@ -18,6 +19,26 @@ import time
 from fritzconnection.lib.fritzhosts import FritzHosts
 from tqdm import tqdm
 import getpass
+
+# Liste der benötigten Module
+MODULES = [
+    "pandas",
+    "fritzconnection",
+    "tqdm",
+    "xlsxwriter"
+]
+
+# Funktion zum Überprüfen und Installieren fehlender Module
+def check_install_modules(modules):
+    for module in modules:
+        if importlib.util.find_spec(module) is None:
+            print(f"🔍 Modul '{module}' nicht gefunden. Installation läuft...")
+            subprocess.run([sys.executable, "-m", "pip", "install", module])
+        else:
+            print(f"✅ Modul '{module}' ist bereits installiert.")
+
+# Module prüfen und installieren
+check_install_modules(MODULES)
 
 # Logo
 logo = """
